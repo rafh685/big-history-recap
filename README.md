@@ -8,4 +8,4 @@ Open the site and present with the keyboard:
 - F: fullscreen
 - On a "Recap time" slide: Space spins the wheel, K shows the key points, N opens the class list
 
-The class list stays only in the browser of the laptop that presents. It is never uploaded.
+The class list (first name and surname initial) is built in. Press N to change it; changes stay only in that browser.

@@ -86,7 +86,8 @@ let pos=0;
 try{const h=parseInt(location.hash.slice(1));if(h>0&&h<=seq.length)pos=h-1}catch(e){}
 for(let i=1;i<=SLIDES;i++){const im=new Image();im.src='slides/s-'+pad(i)+'.jpg'}
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
-let names=store.get('bh-names',[]), picked=store.get('bh-picked',[]), once=store.get('bh-once',true);
+const CLASS=["Filip E.", "Hasan B.", "Arsen O.", "Omar Re.", "Junzhe Y.", "Francesco C.", "Omar Ra.", "Marina B.", "Gabriel F.", "Alexia-Flora O.", "Yulin C.", "Simone B.", "Andria K.", "Tomas S.", "Lukas G.", "Manja V.", "Natali B.", "Yessine K.", "Eduardo G.", "Tekla T.", "Filippo S.", "Phillip M.", "David B.", "Emiliano S.", "Zain M.", "Malek A.", "Dani M.", "Dimitrios P.", "Irakli K.", "Patricio C.", "Ioana C.", "Ana-Maria A.", "Aryan M.", "Timur B.", "Fabián M.", "Nikolozi D.", "Elene B.", "Viktor L.", "Mannat V.", "Catalin M.", "Matei D.", "Naif A.", "Arendt D.", "Carla R.", "Sebastián R."];
+let names=store.get('bh-names',CLASS), picked=store.get('bh-picked',[]), once=store.get('bh-once',true);
 const pool=()=>once?names.filter(n=>!picked.includes(n)):names.slice();
 function show(){
   const s=seq[pos]; const r=$('recap');
