@@ -22,6 +22,7 @@ html,body{height:100%;background:#151311;color:var(--ink);overflow:hidden}
 .recap .lab{position:absolute;left:3.65em;top:3.48em;font-family:var(--mono);font-size:1.15em;letter-spacing:.12em;color:var(--rust);text-transform:uppercase}
 .recap h1{position:absolute;left:.95em;top:2.14em;width:9.52em;font-family:var(--serif);font-weight:400;font-size:4.2em;line-height:1.08;color:var(--ink);text-wrap:balance}
 .recap .ask{position:absolute;left:2.625em;top:13.75em;width:23.75em;font-family:var(--serif);font-size:1.6em;line-height:1.35;color:var(--muted)}
+.recap .ask.q{left:2.1em;color:var(--charcoal);font-size:2em;line-height:1.3;width:19em;top:11em}
 .recap .note{position:absolute;left:3.36em;bottom:7.2em;width:33.6em;background:var(--note);padding:1.1em 1.5em;transform:rotate(-1.2deg);box-shadow:0 .4em 1em rgba(0,0,0,.15);font-family:var(--serif);font-size:1.25em;line-height:1.4;display:none}
 .recap .note.show{display:block}
 .recap .note b{font-family:var(--mono);font-size:.8em;letter-spacing:.1em;color:var(--rust);display:block;margin-bottom:.4em}
@@ -59,7 +60,7 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--rust);outlin
     <div class="wheelbox"><div class="pin"></div><canvas id="wheel" width="1100" height="1100"></canvas></div>
     <div class="empty" id="empty">Add the class list first: press <b>N</b>.</div>
     <div class="who" id="who"></div>
-    <div class="note" id="note"><b>CHECK THE RECAP</b><ul id="points"></ul></div>
+    <div class="note" id="note"><b>WHAT THE SECTION COVERED</b><ul id="points"></ul></div>
     <div class="hint">Space: spin · K: key points · N: class list</div>
     <div class="foot"><span>Big History · Recap of sessions 1 to 6</span><span id="rnum"></span></div>
   </section>
@@ -75,10 +76,10 @@ button:focus-visible,textarea:focus-visible{outline:2px solid var(--rust);outlin
 <script>
 const SLIDES=35, pad=n=>String(n).padStart(2,'0');
 const RECAPS={
-  9:{label:'Recap time · after Erik',title:'Who recaps Session 1?',ask:'Fire, food, heat and energy. In 30 seconds: one idea, one cost.',points:['Fire controlled about 2 million years ago: the first energy revolution','Cooking pre-digests food: shorter gut, more energy for a bigger brain','Every tool has a cost: deforestation, over-hunting, soil salinisation']},
-  18:{label:'Recap time · after Rafael',title:'Who recaps Sessions 2 and 3?',ask:'Clocks, calendars and the first Industrial Revolution. In 30 seconds: one idea from each.',points:['Moon = first clock (29.5 days); 354 vs 365 days, fixed by an intercalary month','Zodiac = a map of the sky in 12 slices; Prague clock = the 15th-century smartphone','Why England: Newton 1713, cheap coal, high wages, the Navy; Megginson 1963, not Darwin']},
-  27:{label:'Recap time · after Kareem',title:'Who recaps Sessions 4 and 5?',ask:'Time, communication and vaccination. In 30 seconds: one idea from each.',points:['Washington 1884: Greenwich = 0°, 24 time zones; the telegraph was taken over by the state','Variolation came from China, India and North Africa (Montagu 1717, Onesimus 1721)','Jenner used cowpox (1796); Balmis 1803 carried it in 22 children; Malthus 1798']},
-  31:{label:'Recap time · after Amalia',title:'Who recaps Session 6?',ask:'Evolution and Social Darwinism. In 30 seconds: one idea, one trap.',points:['Darwin: variation, inheritance, natural selection; no plan, no direction','"Fittest" = best adapted, not strongest; the phrase is Spencer’s','Science explains, ideology justifies']}
+  9:{label:"Open question \u00b7 after Erik",title:"Who answers? Session 1",ask:'Spin the wheel: the student picked answers one open question.',qs:["If you had to give up either fire or the wheel, which would you keep, and why?", "Cooking changed our bodies. What does that tell us about tools changing the people who use them?", "Name a technology today that, like fire, solves one problem and creates another.", "Why could fire be called the first energy revolution?"],points:['Fire controlled about 2 million years ago: the first energy revolution','Cooking pre-digests food: shorter gut, more energy for a bigger brain','Every tool has a cost: deforestation, over-hunting, soil salinisation']},
+  18:{label:"Open question \u00b7 after Rafael",title:"Who answers? Sessions 2 and 3",ask:'Spin the wheel: the student picked answers one open question.',qs:["Why do you think early people used the moon, not the sun, as their first clock?", "A lunar year has 354 days, a solar year 365. What goes wrong if nobody fixes the gap?", "The Prague clock was a 15th-century smartphone. What is today's version, and who controls it?", "Why did the Industrial Revolution start in England? Pick the reason you find strongest and defend it.", "Did clocks make people freer or more controlled?"],points:['Moon = first clock (29.5 days); 354 vs 365 days, fixed by an intercalary month','Zodiac = a map of the sky in 12 slices; Prague clock = the 15th-century smartphone','Why England: Newton 1713, cheap coal, high wages, the Navy; Megginson 1963, not Darwin']},
+  27:{label:"Open question \u00b7 after Kareem",title:"Who answers? Sessions 4 and 5",ask:'Spin the wheel: the student picked answers one open question.',qs:["Who gained the most when the world agreed on Greenwich time in 1884?", "Vaccination is often credited to Jenner alone. Who does that story leave out, and why does it matter?", "Balmis carried the vaccine across the ocean in 22 children. Was that justified?", "Malthus said population would outgrow food. Was he wrong? Why?", "Should a state control a communication network, like the telegraph? Why or why not?"],points:['Washington 1884: Greenwich = 0°, 24 time zones; the telegraph was taken over by the state','Variolation came from China, India and North Africa (Montagu 1717, Onesimus 1721)','Jenner used cowpox (1796); Balmis 1803 carried it in 22 children; Malthus 1798']},
+  31:{label:"Open question \u00b7 after Amalia",title:"Who answers? Session 6",ask:'Spin the wheel: the student picked answers one open question.',qs:["What is the difference between explaining nature and justifying society?", "What do people usually get wrong about \"survival of the fittest\"?", "Where do you still see Social Darwinism today?", "Evolution has no plan and no direction. Why is that idea hard for people to accept?"],points:['Darwin: variation, inheritance, natural selection; no plan, no direction','"Fittest" = best adapted, not strongest; the phrase is Spencer’s','Science explains, ideology justifies']}
 };
 const seq=[];for(let i=1;i<=SLIDES;i++){seq.push({img:i});if(RECAPS[i])seq.push({recap:i});}
 const $=id=>document.getElementById(id);
@@ -92,7 +93,7 @@ const pool=()=>once?names.filter(n=>!picked.includes(n)):names.slice();
 function show(){
   const s=seq[pos]; const r=$('recap');
   if(s.img){r.classList.remove('on');$('img').style.display='block';$('img').src='slides/s-'+pad(s.img)+'.jpg';$('img').alt='Slide '+s.img;}
-  else{const d=RECAPS[s.recap];$('img').style.display='none';r.classList.add('on');$('rlab').textContent=d.label;$('rtitle').textContent=d.title;$('rask').textContent=d.ask;$('points').innerHTML=d.points.map(p=>'<li>'+p.replace(/</g,'&lt;')+'</li>').join('');$('note').classList.remove('show');$('who').textContent='';$('rnum').textContent='Recap '+(Object.keys(RECAPS).indexOf(String(s.recap))+1)+' of 4';angle=0;draw();}
+  else{const d=RECAPS[s.recap];$('img').style.display='none';r.classList.add('on');$('rlab').textContent=d.label;$('rtitle').textContent=d.title;$('rask').textContent=d.ask;$('rask').classList.remove('q');$('points').innerHTML=d.points.map(p=>'<li>'+p.replace(/</g,'&lt;')+'</li>').join('');$('note').classList.remove('show');$('who').textContent='';$('rnum').textContent='Recap '+(Object.keys(RECAPS).indexOf(String(s.recap))+1)+' of 4';angle=0;draw();}
   $('count').textContent=(pos+1)+' / '+seq.length;$('bar').style.width=((pos+1)/seq.length*100)+'%';
   history.replaceState(null,'','#'+(pos+1));
 }
@@ -124,7 +125,7 @@ function spin(){
   let end=target-turns*2*Math.PI; while(end>start)end-=2*Math.PI;
   const dur=reduce?300:4200,t0=performance.now();
   (function step(t){const k=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-k,4);angle=start+(end-start)*e;draw();
-    if(k<1)requestAnimationFrame(step);else{spinning=false;const w=list[winner];$('who').textContent=w+', your turn!';
+    if(k<1)requestAnimationFrame(step);else{spinning=false;const w=list[winner];$('who').textContent=w+', your turn!';const d=RECAPS[seq[pos].recap];d.used=d.used||[];let left=d.qs.map((_,i)=>i).filter(i=>!d.used.includes(i));if(!left.length){d.used=[];left=d.qs.map((_,i)=>i);}const qi=left[Math.floor(Math.random()*left.length)];d.used.push(qi);$('rask').textContent=d.qs[qi];$('rask').classList.add('q');
       if(once&&!picked.includes(w)){picked.push(w);store.set('bh-picked',picked);}}})(t0);
 }
 function go(d){if(spinning)return;pos=Math.max(0,Math.min(seq.length-1,pos+d));show();}
