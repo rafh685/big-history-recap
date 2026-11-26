@@ -47,12 +47,15 @@ html,body{height:100%;background:#151311;color:var(--ink);overflow:hidden}
 #panel .row{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
 #panel button{font:14px var(--mono);padding:9px 16px;border:0;border-radius:4px;cursor:pointer;background:var(--charcoal);color:var(--paper)}
 #panel button.alt{background:transparent;color:var(--ink);border:1px solid #CFC5B0}
+.say{position:absolute;display:none;font-family:var(--serif);font-size:calc(min(100vw,177.78vh)*0.0135);line-height:1.4;color:var(--ink);border-left:.25em solid var(--rust);padding:.15em 0 .15em .8em}
+.say.on{display:block}
 button:focus-visible,textarea:focus-visible{outline:2px solid var(--rust);outline-offset:2px}
 </style>
 </head>
 <body>
 <div id="stage"><div id="frame">
   <img id="img" alt="">
+  <div class="say" id="say"></div>
   <section class="recap" id="recap" aria-live="polite">
     <div class="lab" id="rlab">Recap time</div>
     <h1 id="rtitle">Who recaps?</h1>
@@ -81,6 +84,8 @@ const RECAPS={
   27:{label:"Open question \u00b7 after Kareem",title:"Who answers? Sessions 4 and 5",ask:'Spin the wheel: the student picked answers one open question.',qs:["Who gained the most when the world agreed on Greenwich time in 1884?", "Vaccination is often credited to Jenner alone. Who does that story leave out, and why does it matter?", "Balmis carried the vaccine across the ocean in 22 children. Was that justified?", "Malthus said population would outgrow food. Was he wrong? Why?", "Should a state control a communication network, like the telegraph? Why or why not?"],points:['Washington 1884: Greenwich = 0°, 24 time zones; the telegraph was taken over by the state','Variolation came from China, India and North Africa (Montagu 1717, Onesimus 1721)','Jenner used cowpox (1796); Balmis 1803 carried it in 22 children; Malthus 1798']},
   31:{label:"Open question \u00b7 after Amalia",title:"Who answers? Session 6",ask:'Spin the wheel: the student picked answers one open question.',qs:["What is the difference between explaining nature and justifying society?", "What do people usually get wrong about \"survival of the fittest\"?", "Where do you still see Social Darwinism today?", "Evolution has no plan and no direction. Why is that idea hard for people to accept?"],points:['Darwin: variation, inheritance, natural selection; no plan, no direction','"Fittest" = best adapted, not strongest; the phrase is Spencer’s','Science explains, ideology justifies']}
 };
+const SAY={"10": [66, 18, 29, "Before clocks, people watched the sky. The moon changes shape every 29.5 days, so it became the first clock. People scratched each moon on bone to count time, long before farming."], "11": [5.5, 76, 80, "Twelve moons give only 354 days, but the seasons follow the sun: 365 days. So every few years people added an extra month to keep the calendar in step with the harvest."], "12": [60, 76, 35, "Before horoscopes, the zodiac was a farming tool: the sky cut into 12 slices to know where the sun is in the year. Our 12 months come from it."], "13": [5.5, 74, 34, "Most people had no clock of their own. This one public dial told the whole city the hour, the season and the sky, a bit like a phone does today."], "14": [69, 58, 26, "Every culture solved the same problem on its own: Scotland with pits, China with 24 solar terms, the Maya with a year more precise than Europe's."], "15": [68, 70.5, 29, "England had the vision and the resources: Newton's view of nature as a machine, cheap coal, high wages, a navy for trade. So industries and factories grew, and work moved from the rhythm of the sun to the factory clock and its shifts."], "16": [5.5, 71, 86, "Newton saw nature as a machine we can measure and control, the view that fit the factory age. Humboldt saw a web: cut the forests and you lose both fuel and water, because every part depends on the others."], "17": [5.5, 71.5, 88, "Writers saw the price first. Dickens showed factory towns full of smoke where workers were just “hands”. Mary Shelley's Frankenstein is a creation that turns on its maker: a warning about technology we cannot control."], "18": [5.5, 68, 86, "Each team imagined one change to history. Hands up for the one you think changes the most, then I hand over to Kareem."]};
+let sayOn=true;
 const seq=[];for(let i=1;i<=SLIDES;i++){seq.push({img:i});if(RECAPS[i])seq.push({recap:i});}
 const $=id=>document.getElementById(id);
 let pos=0;
@@ -92,8 +97,8 @@ let names=store.get('bh-names',CLASS), picked=store.get('bh-picked',[]), once=st
 const pool=()=>once?names.filter(n=>!picked.includes(n)):names.slice();
 function show(){
   const s=seq[pos]; const r=$('recap');
-  if(s.img){r.classList.remove('on');$('img').style.display='block';$('img').src='slides/s-'+pad(s.img)+'.jpg';$('img').alt='Slide '+s.img;}
-  else{const d=RECAPS[s.recap];$('img').style.display='none';r.classList.add('on');$('rlab').textContent=d.label;$('rtitle').textContent=d.title;$('rask').textContent=d.ask;$('rask').classList.remove('q');$('points').innerHTML=d.points.map(p=>'<li>'+p.replace(/</g,'&lt;')+'</li>').join('');$('note').classList.remove('show');$('who').textContent='';$('rnum').textContent='Recap '+(Object.keys(RECAPS).indexOf(String(s.recap))+1)+' of 4';angle=0;draw();}
+  if(s.img){r.classList.remove('on');$('img').style.display='block';$('img').src='slides/s-'+pad(s.img)+'.jpg';$('img').alt='Slide '+s.img;const t=SAY[s.img],y=$('say');if(t&&sayOn){y.style.left=t[0]+'%';y.style.top=t[1]+'%';y.style.width=t[2]+'%';y.textContent=t[3];y.classList.add('on');}else y.classList.remove('on');}
+  else{$('say').classList.remove('on');const d=RECAPS[s.recap];$('img').style.display='none';r.classList.add('on');$('rlab').textContent=d.label;$('rtitle').textContent=d.title;$('rask').textContent=d.ask;$('rask').classList.remove('q');$('points').innerHTML=d.points.map(p=>'<li>'+p.replace(/</g,'&lt;')+'</li>').join('');$('note').classList.remove('show');$('who').textContent='';$('rnum').textContent='Recap '+(Object.keys(RECAPS).indexOf(String(s.recap))+1)+' of 4';angle=0;draw();}
   $('count').textContent=(pos+1)+' / '+seq.length;$('bar').style.width=((pos+1)/seq.length*100)+'%';
   history.replaceState(null,'','#'+(pos+1));
 }
@@ -142,6 +147,7 @@ document.addEventListener('keydown',e=>{
   else if(k===' '||k==='Enter'){e.preventDefault();seq[pos].recap?spin():go(1)}
   else if(k==='n'||k==='N'){e.preventDefault();openPanel()}
   else if(k==='k'||k==='K'){if(seq[pos].recap)$('note').classList.toggle('show')}
+  else if(k==='s'||k==='S'){sayOn=!sayOn;show()}
   else if(k==='f'||k==='F'){if(!document.fullscreenElement)document.documentElement.requestFullscreen?.().catch(()=>{});else document.exitFullscreen?.()}
 });
 $('frame').addEventListener('click',e=>{if(seq[pos].recap){if(e.target.closest('.wheelbox'))spin();return;}const x=e.clientX/innerWidth;go(x<0.3?-1:1);});

@@ -6,6 +6,7 @@ Open the site and present with the keyboard:
 
 - Right / left arrow: next / previous slide
 - F: fullscreen
+- S hides or shows the speaker lines on slides 10 to 18
 - On an "Open question" slide: Space spins the wheel and shows one open question for the student picked, K shows what the section covered, N opens the class list
 
 The class list (first name and surname initial) is built in. Press N to change it; changes stay only in that browser.
